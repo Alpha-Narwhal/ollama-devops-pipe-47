@@ -8,8 +8,8 @@ on:
 
 jobs:
   update-latest:
-    environment: release
     runs-on: ubuntu-latest
+    environment: release
 
     steps:
       - uses: actions/checkout@v4
@@ -20,13 +20,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Pull build image
-        run: docker pull ollama/ollama:build-pipeline
+      - name: Pull Ollama image
+        run: docker pull ollama/ollama:latest
 
-      - name: Tag images as latest
-        env:
-          PUSH: "1"
-        shell: bash
-        run: |
-          export "VERSION=${GITHUB_REF_NAME#v}"
-          ./scripts/tag_latest.sh
+      - name: Tag image
+        run: docker tag ollama/ollama:latest sophiemm/ollama-build:latest
+
+      - name: Push image
+        run: docker push sophiemm/ollama-build:latest
