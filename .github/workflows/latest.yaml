@@ -10,13 +10,19 @@ jobs:
   update-latest:
     environment: release
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Pull build image
+        run: docker pull ollama/ollama:build-pipeline
+
       - name: Tag images as latest
         env:
           PUSH: "1"
@@ -24,12 +30,3 @@ jobs:
         run: |
           export "VERSION=${GITHUB_REF_NAME#v}"
           ./scripts/tag_latest.sh
-          
-      - name: Pull Ollama image
-        run: docker pull ollama/ollama
-
-      - name: Tag image
-        run: docker tag ollama/ollama sophiemm/ollama-build:latest
-
-      - name: Push image
-        run: docker push sophiemm/ollama-build:latest
