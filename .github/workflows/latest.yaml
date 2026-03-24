@@ -24,3 +24,12 @@ jobs:
         run: |
           export "VERSION=${GITHUB_REF_NAME#v}"
           ./scripts/tag_latest.sh
+          
+      - name: Pull Ollama image
+        run: docker pull ollama/ollama
+
+      - name: Tag image
+        run: docker tag ollama/ollama sophiemm/ollama-build:latest
+
+      - name: Push image
+        run: docker push sophiemm/ollama-build:latest
