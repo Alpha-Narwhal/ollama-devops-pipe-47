@@ -49,13 +49,15 @@ resource "aws_instance" "Ollama" {
   user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
-              sudo amazon-linux-extras install nginx1
+              sudo apt install nginx -y
               sudo systemctl start nginx
               sudo systemctl enable nginx
 
-              sudo yum install curl -y
-              sudo yum install zstd -y
+              sudo apt install curl -y
+              sudo apt install zstd -y
               curl -fsSL https://ollama.com/install.sh | sh
+
+              ollama run falcon3:1b
               EOF
 
   tags = {
