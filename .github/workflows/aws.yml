@@ -18,11 +18,9 @@ jobs:
         with:
           go-version: '1.21'
 
-      - name: Got to tests file
-        run: cd integration
-
       - name: Run Go tests
-        run: go basic_test.go
+        working-directory: ./integration
+        run: go test basic_test.go
 
   terraform:
     runs-on: ubuntu-latest
