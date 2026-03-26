@@ -26,6 +26,16 @@ resource "aws_security_group" "web_server_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow HTTP from anywhere"
   }
+
+  #Ingress rule for Ollama (Port 11434)
+  ingress {
+    from_port = 11434 
+    to_port = 11434 
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allows Ollama through"
+  }
+
 }
 resource "aws_instance" "web" {
   ami           = "ami-0c02fb55956c7d316"
@@ -37,6 +47,9 @@ resource "aws_instance" "web" {
               sudo amazon-linux-extras install nginx1
               sudo systemctl start nginx
               sudo systemctl enable nginx
+
+              sudo apt install curl -y
+              curl -fsSL https://ollama.com/install.sh | sh
               EOF
 
   tags = {
