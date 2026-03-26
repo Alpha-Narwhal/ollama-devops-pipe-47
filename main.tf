@@ -39,7 +39,12 @@ resource "aws_security_group" "ollama_server_sg" {
 }
 resource "aws_instance" "Ollama" {
   ami           = "ami-0ec10929233384c7f"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
+
+   root_block_device {
+    volume_size = 20 # Sets the root volume size to 50 GB
+    volume_type = "gp3" # Optional: specify volume type, e.g., gp2, gp3, io1, etc.
+  }
 
   user_data = <<-EOF
               #!/bin/bash
@@ -54,6 +59,6 @@ resource "aws_instance" "Ollama" {
               EOF
 
   tags = {
-    Name = "Ollama 0.3"
+    Name = "Ollama 0.4"
   }
 }
