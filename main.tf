@@ -53,6 +53,6 @@ resource "aws_instance" "web" {
               EOF
 
   tags = {
-    Name = "Ollama 0.2"
+    Name = "Ollama 0.3"
   }
 }
