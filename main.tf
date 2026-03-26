@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 # Define the security group resource
-resource "aws_security_group" "web_server_sg" {
-  name        = "web_server_security_group"
+resource "aws_security_group" "ollama_server_sg" {
+  name        = "ollama_server_security_group"
   description = "Allow SSH and HTTP inbound traffic"
   # Optional: specify a non-default VPC ID if necessary
   # vpc_id      = "vpc-12345678" 
