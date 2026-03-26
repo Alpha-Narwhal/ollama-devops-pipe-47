@@ -37,7 +37,7 @@ resource "aws_security_group" "ollama_server_sg" {
   }
 
 }
-resource "aws_instance" "web" {
+resource "aws_instance" "Ollama" {
   ami           = "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
 
