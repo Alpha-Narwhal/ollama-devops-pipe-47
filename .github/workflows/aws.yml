@@ -19,7 +19,7 @@ jobs:
           go-version: '1.21'
 
       - name: Got to tests file
-        run: cd integation
+        run: cd integration
 
       - name: Run Go tests
         run: go basic_test.go
