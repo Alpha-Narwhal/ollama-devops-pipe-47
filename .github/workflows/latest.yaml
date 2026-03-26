@@ -1,24 +1,45 @@
 name: latest
 
 on:
+  push:
+  workflow_dispatch:
   release:
     types: [released]
 
 jobs:
-  update-latest:
-    environment: release
-    runs-on: linux
+  test:
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Run Go tests
+        run: go test ./... -v
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    environment: release
+
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DOCKER_USER }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-      - name: Tag images as latest
-        env:
-          PUSH: "1"
-        shell: bash
-        run: |
-          export "VERSION=${GITHUB_REF_NAME#v}"
-          ./scripts/tag_latest.sh
+
+      - name: Pull Ollama image
+        run: docker pull ollama/ollama:latest
+
+      - name: Tag image
+        run: docker tag ollama/ollama:latest sophiemm/ollama-build:latest
+
+      - name: Push image
+        run: docker push sophiemm/ollama-build:latest
