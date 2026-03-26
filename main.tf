@@ -38,7 +38,7 @@ resource "aws_security_group" "ollama_server_sg" {
 
 }
 resource "aws_instance" "Ollama" {
-  ami           = "ami-0c02fb55956c7d316"
+  ami           = "ami-0ec10929233384c7f"
   instance_type = "t2.micro"
 
   user_data = <<-EOF
@@ -48,7 +48,8 @@ resource "aws_instance" "Ollama" {
               sudo systemctl start nginx
               sudo systemctl enable nginx
 
-              sudo apt install curl -y
+              sudo yum install curl -y
+              sudo yum install zstd -y
               curl -fsSL https://ollama.com/install.sh | sh
               EOF
 
