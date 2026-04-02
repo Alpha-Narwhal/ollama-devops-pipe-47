@@ -56,11 +56,11 @@ resource "aws_instance" "Ollama" {
               sudo apt install curl -y
               sudo apt install zstd -y
               curl -fsSL https://ollama.com/install.sh | sh
-
+              ollama
               ollama run falcon3:1b
               EOF
 
   tags = {
-    Name = "Ollama 0.4"
+    Name = "Ollama 0.5"
   }
 }
